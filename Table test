@@ -9,35 +9,40 @@ chi_table=function(var1,var2,df){
   
   x1=matrix(a)[1:f_len]
   x2=matrix(a)[(1+f_len):(2*f_len)]
-  x3=c(round(chi_test$statistic,4),rep("-",f_len-1))
-  x4=c(round(chi_test$p.value,4),rep("-",f_len-1))
+  x3=c(round(chi_test$statistic,4),rep(" ",f_len-1))
+  x4=c(round(chi_test$p.value,4),rep(" ",f_len-1))
   if(f_len>2){
-    x5=c(rep("-",f_len))
+    x5=c(rep(" ",f_len))
   } else{
     table_OR=questionr::odds.ratio(a)
-    x5=c(round(table_OR$OR,4),rep("-",f_len-1))
+    x5=c(round(table_OR$OR,4),rep(" ",f_len-1))
   }
   if(f_len>2){
-    x6=c(rep("-",f_len))
+    x6=c(rep(" ",f_len))
   } else{
     table_OR=questionr::odds.ratio(a)
-    x6=c(round(table_OR$`2.5 %`,4),rep("-",f_len-1))
+    x6=c(round(table_OR$`2.5 %`,4),rep(" ",f_len-1))
   }
   if(f_len>2){
-    x7=c(rep("-",f_len))
+    x7=c(rep(" ",f_len))
   } else{
     table_OR=questionr::odds.ratio(a)
-    x7=c(round(table_OR$`97.5 %`,4),rep("-",f_len-1))
+    x7=c(round(table_OR$`97.5 %`,4),rep(" ",f_len-1))
   }
   
   table_fi=fisher.test(a)
-  x8=c(round(table_fi$p.value,4),rep("-",f_len-1))
+  x8=c(round(table_fi$p.value,4),rep(" ",f_len-1))
   
   table_df=cbind(x1,x2,x3,x4,x5,x6,x7,x8)
   colnames(table_df)=table_name
   x=attributes(table_df)
-  x$dimnames[[1]]=c(as.character(var1),rep("-",f_len-1))
+  x$dimnames[[1]]=c(as.character(var1),rep(" ",f_len-1))
   mostattributes(table_df) = x
   return(table_df)
   
 }
+###############################
+#gender
+tb=chi_table("gender","lym",df)
+as.data.frame(tb)
+

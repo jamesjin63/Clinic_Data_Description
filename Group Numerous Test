@@ -1,60 +1,63 @@
 # Two or more group test
 #T-test
 Num_table=function(Varible,Response,df){
-  #select the two dataframe
-  df1=df %>% select(Varible,Response)
-  colnames(df1)=c("var","res")
-  #get wd
-  n_len=length(table(df1[,2]))
-  if(n_len==2){
-    a=t.test(var~res,df1)
-    b=wilcox.test(var~res,df1)
-    nor=shapiro.test(df1$var)
-    test_table=df1 %>% group_by(res) %>% 
-      summarise(N=n(),
-                Norm= ifelse(nor$p.value>0.05,"Yes","No"),
-                Mean=mean(var),
-                Std=sd(var),
-                M_25=quantile(var)[2],
-                M_50=quantile(var)[3],
-                M_75=quantile(var)[5],
-                Method=ifelse(nor$p.value>0.05,"t.test","wilcox.test"),
-                Statistic_test=ifelse(nor$p.value>0.05,a$statistic,b$statistic),
-                P_value=ifelse(nor$p.value>0.05,a$p.value,b$p.value))
-    test_table$varible=c(Response," ")
-    test_table$Statistic_test=c(test_table$Statistic_test[1]," ")
-    test_table$Method=c(test_table$Method[1]," ")
-    test_table$group=test_table$res
-    test_table=test_table%>% select(varible,group,N,Norm,Mean,Std,M_25,M_50,M_75,Method,Statistic_test)
-    
-  }else{
-    # One Way Anova 
-    a=aov(var~res,df1)
-    a=summary(a)
-    a=a[[1]]
-    # Kruskal Wallis Test One Way Anova by Ranks 
-    b=kruskal.test(var~res,df1)
-    nor=shapiro.test(df1$var)
-    test_table=df1 %>% group_by(res) %>% 
-      summarise(N=n(),
-                Norm= ifelse(nor$p.value>0.05,"Yes","No"),
-                Mean=mean(var),
-                Std=sd(var),
-                M_25=quantile(var)[2],
-                M_50=quantile(var)[3],
-                M_75=quantile(var)[5],
-                Method=ifelse(nor$p.value>0.05,"Anova","kruskal.test"),
-                Statistic_test=ifelse(nor$p.value>0.05,a$`F value`[1],b$statistic),
-                P_value=ifelse(nor$p.value>0.05,a$`Pr(>F)`[1],b$p.value))
-    test_table$varible=c(Response," "," ")
-    test_table$Statistic_test=c(test_table$Statistic_test[1]," "," ")
-    test_table$Method=c(test_table$Method[1]," "," ")
-    test_table$group=test_table$res
-    test_table=test_table%>% select(varible,group,N,Norm,Mean,Std,M_25,M_50,M_75,Method,Statistic_test)
-    
-  }
-  return(test_table)
+        #select the two dataframe
+        df1=df %>% select(Varible,Response)
+        colnames(df1)=c("var","res")
+        #get wd
+        n_len=length(table(df1[,2]))
+        if(n_len==2){
+                a=t.test(var~res,df1)
+                b=wilcox.test(var~res,df1)
+                nor=shapiro.test(df1$var)
+                test_table=df1 %>% group_by(res) %>% 
+                        summarise(N=n(),
+                                  Norm= ifelse(nor$p.value>0.05,"Yes","No"),
+                                  Mean=mean(var),
+                                  Std=sd(var),
+                                  M_25=quantile(var)[2],
+                                  M_50=quantile(var)[3],
+                                  M_75=quantile(var)[5],
+                                  Method=ifelse(nor$p.value>0.05,"t.test","wilcox.test"),
+                                  Statistic_test=ifelse(nor$p.value>0.05,a$statistic,b$statistic),
+                                  P_value=ifelse(nor$p.value>0.05,a$p.value,b$p.value))
+                test_table$varible=c(Response," ")
+                test_table$Statistic_test=c(test_table$Statistic_test[1]," ")
+                test_table$Method=c(test_table$Method[1]," ")
+                test_table$group=test_table$res
+                test_table$P_value=c(test_table$P_value[1]," ")
+                test_table=test_table%>% select(varible,group,N,Norm,Mean,Std,M_25,M_50,M_75,Method,Statistic_test,P_value)
+                
+        }else{
+                # One Way Anova 
+                a=aov(var~res,df1)
+                a=summary(a)
+                a=a[[1]]
+                # Kruskal Wallis Test One Way Anova by Ranks 
+                b=kruskal.test(var~res,df1)
+                nor=shapiro.test(df1$var)
+                test_table=df1 %>% group_by(res) %>% 
+                        summarise(N=n(),
+                                  Norm= ifelse(nor$p.value>0.05,"Yes","No"),
+                                  Mean=mean(var),
+                                  Std=sd(var),
+                                  M_25=quantile(var)[2],
+                                  M_50=quantile(var)[3],
+                                  M_75=quantile(var)[5],
+                                  Method=ifelse(nor$p.value>0.05,"Anova","kruskal.test"),
+                                  Statistic_test=ifelse(nor$p.value>0.05,a$`F value`[1],b$statistic),
+                                  P_value=ifelse(nor$p.value>0.05,a$`Pr(>F)`[1],b$p.value))
+                test_table$varible=c(Response," "," ")
+                test_table$Statistic_test=c(test_table$Statistic_test[1]," "," ")
+                test_table$Method=c(test_table$Method[1]," "," ")
+                test_table$group=test_table$res
+                c(test_table$Statistic_test[1]," ")
+                test_table=test_table%>% select(varible,group,N,Norm,Mean,Std,M_25,M_50,M_75,Method,Statistic_test,P_value)
+                
+        }
+        return(test_table)
 }
+
 
 #################################
 #age

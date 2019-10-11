@@ -1,5 +1,20 @@
 # Clinic_Data_Description
 Data explorations within clinical research
+
+## Plot
+
+```{r }
+library(DataExplorer)
+
+introduce(iris)
+#>   rows columns discrete_columns continuous_columns all_missing_columns
+#> 1  150       5                1                  4                   0
+#>   total_missing_values total_observations memory_usage
+#> 1                    0                750         7256
+
+plot_missing(iris)
+```
+Use the packages [here](https://stackoverflow.com/questions/52344047/how-to-extend-the-summary-function-to-include-sd-kurtosis-and-skew)
 ## 1.The Quantitative data
 The **Group Numberous Test** chunk
 
